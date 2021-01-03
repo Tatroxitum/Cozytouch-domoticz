@@ -1076,16 +1076,12 @@ def gestion_consigne(texte,url_device,nom_device, idx_cons_domoticz, cons_device
     if e != 0.5: 
         cons_domoticz = round(cons_domoticz)
 
-    # si c'est une consigne de dérogation, elle est initialisée / peut être remise à 0 par Cozytouch si changement sur le radiateur en local ou via l'application,
-    # ou si on met la consigne "eco" ou "confort".
-    # on force la consigne de dérogation précédente à 1 pour voir le changement
-    # la consigne de dérogation est ensuite traitée comme n'importe quel type de consigne
+    # si c'est une consigne de dérogation, elle est initialisée / peut être remise à 0 par Cozytouch si changement sur le radiateur en local
+    #  ou via l'application, ou si on met la consigne "eco" ou "confort".
     # TO DO : ne pas tester le texte passé en argument de la fonction mais l'objet
-    if texte=="derogation" and cons_domoticz_prec == 0:
-        cons_domoticz_prec = 1
 
     # comparaison avec la consigne en cours
-    if cons_device != cons_domoticz and cons_domoticz != cons_domoticz_prec :
+    if cons_device != cons_domoticz and cons_domoticz != cons_domoticz_prec and cons_domoticz_prec > 0 and (texte != "derogation" or cons_domoticz > 0):
         # si un écart est détecté
         # et si le changement de consigne vient de domoticz, on envoie le changement au device
         
@@ -1116,7 +1112,7 @@ def gestion_consigne(texte,url_device,nom_device, idx_cons_domoticz, cons_device
             if debug:
                 print('Fonction gestion_consigne : Chgt consigne Domoticz, envoie vers Cozytouch : '+(nom_device.encode("utf-8"))+'/'+(texte.encode("utf-8"))+'/'+str(cons_domoticz)+'°C')
 
-    elif cons_device != cons_domoticz and cons_domoticz == cons_domoticz_prec and cons_domoticz_prec > 0:
+     elif cons_device != cons_domoticz and cons_domoticz == cons_domoticz_prec and (cons_domoticz_prec > 0 or texte == "derogation"):
         # sinon, le changement vient du device Cozytouch
         # mise à jour de domoticz
         if debug:
