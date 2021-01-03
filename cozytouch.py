@@ -1112,7 +1112,7 @@ def gestion_consigne(texte,url_device,nom_device, idx_cons_domoticz, cons_device
             if debug:
                 print('Fonction gestion_consigne : Chgt consigne Domoticz, envoie vers Cozytouch : '+(nom_device.encode("utf-8"))+'/'+(texte.encode("utf-8"))+'/'+str(cons_domoticz)+'°C')
 
-     elif cons_device != cons_domoticz and cons_domoticz == cons_domoticz_prec and (cons_domoticz_prec > 0 or texte == "derogation"):
+    elif cons_device != cons_domoticz and cons_domoticz == cons_domoticz_prec and (cons_domoticz_prec > 0 or texte == "derogation"):
         # sinon, le changement vient du device Cozytouch
         # mise à jour de domoticz
         if debug:
